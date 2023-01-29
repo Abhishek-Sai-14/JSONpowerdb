@@ -29,3 +29,18 @@ Primary key: Project ID
 * Click on [Update] button to update the data in the database and go to step-2.
 
 * Click [Reset] to reset the form as per the step-2.
+
+# Benefits of using JsonPowerDB
+
+1. JsonPowerDB (JPDB) is a cutting-edge, disruptive, multi-mode DBMS with a number of USPs.
+2. A proprietary algorithm for CRUD operations with high performance. Several times quicker than well-known DBMS.
+3. Serverless support for quicker development - A complete dynamic application may be developed by a UI developer.
+4. The speed of DBMS with integrated web / application server and embedded cache is lightning fast.
+5. The best query performance is provided by server side Native NoSQL.
+6. Built-in ability to query across many JPDB databases.
+7. Support for Document DB, Key-Value DB, and RDBMS in a multi-mode DBMS.
+8. Easy to develop and maintain and without a schema.
+9. HTTP-compatible programming languages can use the web-services API.
+10. Improved with a framework that supports pluggable APIs - A developer can create a pluggable API and add it to any of our cloud JPDB instances.
+11. The development process is made simple, more readable, and less error prone through the standardisation of API development framework.
+12. Multiple levels of security.
