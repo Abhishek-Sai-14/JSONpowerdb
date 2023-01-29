@@ -4,7 +4,7 @@
 
 Project Management Form that will store data in PROJECT-TABLE relation of COLLEGE-DB database
 
-![Project Management Form](/JSONpowerdb/project management form.png)
+![Project Management Form](/JSONpowerdb/form.png)
 
 Input Fields: {Project-ID, Project-Name, Assigned-To, Assignment-Date, Deadline}
 
