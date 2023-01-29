@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html lang="en">
+    <head>
+        <title>Bootstrap Example</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Project Management Form</h2>
+            <form id="ProjForm" method="post">
+                <div class="form-group">
+                    <label for="Projid">Project ID:</label> 
+                    <input type="text" class="form-control" id="Projid"
+                           placeholder="Enter Project ID"  name="Projid" required>
+                </div>
+                <div class="form-group">
+                    <label for="ProjName"> Project Name:</label>
+                    <input type="text" class="form-control" id="ProjName"
+                           placeholder="Enter Project Name" name="ProjName">
+                </div>
+                <div class="form-group">
+                    <label for="AssignedTo">Assigned To</label>
+                    <input type="text" class="form-control" id="AssignedTo"
+                           placeholder="Assigned To" name="AssignedTo">
+                </div>
+                <div class="form-group">
+                    <label for="Assdate">Assignment-Date</label>
+                    <input type="text" class="form-control" id="Assdate"
+                           placeholder="Assingment date" name="Assdate">
+                </div>
+                <div class="form-group">
+                    <label for="Deadline">Deadline</label>
+                    <input type="email" class="form-control" id="Deadline"
+                           placeholder="Enter Deadline" name="Deadline">
+                </div>
+               
+
+                <input type="button" class="btn btn-primary" id="empSave" value="Save"
+                       onclick="saveStudent();">
+                <input type="button" class="btn btn-primary" id="empUpdate" value="Update"
+                       onclick="updateStudent();">
+                <input type="button" class="btn btn-primary" id="empReset" value="Reset"
+                       onclick="resetStudent();">
+            </form>
+        </div>
+        <script>
+            var jpdbUrl = "http://api.login2explore.com:5577";
+            var jpdbIrl = "/api/irl";
+            var jpdbIml = "/api/iml";
+            function validateAndGetFormData() {
+                var ProjID = $("#Projid").val();
+                if (ProjID === "") {
+                    alert("Project ID Required Value");
+                            $("#Projid").focus();
+                    return "";
+                }
+                var ProjNamevar = $("#ProjName").val();
+                if (ProjNamevar === "") {
+                    alert("Project Name is Required Value");
+                    $("#ProjName").focus();
+                    return "";
+                }
+                var Assignedvar = $("#AssignedTo").val();
+                if (Assignedvar === "") {
+                    alert("Assigned to is Required Value");
+                    $("#AssignedTo").focus();
+                    return "";
+                }
+                var assdatevar = $("#Assdate").val();
+                if (assdatevar === "") {
+                    alert("Assigned date is Required Value");
+                    $("#Assdate").focus();
+                    return "";
+                }
+                var deadlinevar = $("#Deadline").val();
+                if (deadlinevar === "") {
+                    alert("Deadline is Required Value");
+                    $("#Deadline").focus();
+                    return "";
+                }
+                var jsonStrObj = {
+                    ProjectID: ProjID,
+                    ProjectName: ProjNamevar,
+                    Assignedto: Assignedvar,
+                    AssignmentDate: assdatevar,
+                    Deadline: deadlinevar,
+                    
+                };
+                return JSON.stringify(jsonStrObj);
+            }
+            function createPUTRequest(connToken, jsonObj, dbName, relName) {
+                var putRequest = "{\n"
+                        + "\"token\" : \""
+                        + connToken
+                        + "\","
+                        + "\"dbName\": \""
+                        + dbName
+                        + "\",\n" + "\"cmd\" : \"PUT\",\n"
+                        + "\"rel\" : \""
+                        + relName + "\","
+                        + "\"jsonStr\": \n"
+                        + jsonObj
+                        + "\n"
+                        + "}";
+                return putRequest;
+            }
+            
+            function createUPDATERecord(connToken, jsonObj, dbName, relName) {
+                var putRequest = "{\n"
+                        + "\"token\" : \""
+                        + connToken
+                        + "\","
+                        + "\"dbName\": \""
+                        + dbName
+                        + "\",\n" + "\"cmd\" : \"UPDATE\",\n"
+                        + "\"rel\" : \""
+                        + relName + "\","
+                        + "\"jsonStr\": \n"
+                        + jsonObj
+                        + "\n"
+                        + "}";
+                return putRequest;
+            }
+
+            function executeCommand(reqString, dbBaseUrl, apiEndPointUrl) {
+                var url = dbBaseUrl + apiEndPointUrl;
+                var jsonObj;
+                $.post(url, reqString, function (result) {
+                    jsonObj = JSON.parse(result);
+                }).fail(function (result) {
+                    var dataJsonObj = result.responseText;
+                    jsonObj = JSON.parse(dataJsonObj);
+                });
+                return jsonObj;
+            }
+
+
+            function saveStudent() {
+                var jsonStr = validateAndGetFormData();
+                if (jsonStr === "") {
+                    return;
+                }
+                var putReqStr = createPUTRequest("90932260|-31949270683694639|90954463",
+                        jsonStr, "College-DB", "PROJECT-TABLE");
+                alert(putReqStr);
+                jQuery.ajaxSetup({async: false});
+                var resultObj = executeCommand(putReqStr,
+                        "http://api.login2explore.com:5577", "/api/iml");
+
+                jQuery.ajaxSetup({async: true});
+                alert(JSON.stringfy(resultObj));
+                 resetForm();
+            }
+            
+            function resetStudent() {
+                $("#Projid").val("");
+                $("#ProjName").val("");
+                $("#AssignedTo").val("");
+                $("#Assdate").val("");
+                $("#Deadline").val("");
+                $("#ProjForm").focus();
+              }
+              
+            function updateStudent() {
+                jsonChg = validateAndGetFormData();
+                var updateRequest = createUPDATERecord(
+                  "90932260|-31949270683694639|90954463",
+                  jsonChg,
+                  "College-DB",
+                  "PROJECT-TABLE",
+                  localStorage.getItem("recno")
+                );
+                jQuery.ajaxSetup({ async: false });
+                var resultObj = executeCommand(updateRequest,
+                        "http://api.login2explore.com:5577", "/api/iml");
+
+                jQuery.ajaxSetup({async: true});
+                alert("Updated");
+              }
+        </script>
+    </body>
+</html>
